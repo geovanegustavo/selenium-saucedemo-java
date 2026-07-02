@@ -13,13 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Testes de Autenticação")
 @Execution(ExecutionMode.CONCURRENT) // Permite que o JUnit execute estes testes em paralelo com total independência
-class LoginLogoutTest extends BaseTest {
+class LoginTest extends BaseTest {
 
     @Test
     @DisplayName("Deve realizar login com sucesso usando credenciais validas")
     void deveRealizarLoginComSucesso() {
+        // 1. Faz o login
         InventoryPage inventoryPage = loginPage.login(TestData.VALID_USER, TestData.PASSWORD);
 
+        // 2. Valida se o login foi realizado e a página de inventário foi exibida
         assertAll("Verificações da página de Inventário pós-login",
             () -> assertTrue(inventoryPage.isDisplayed(), "A pagina de produtos deveria estar visivel"),
             () -> assertEquals("Products", inventoryPage.getPageTitle(), "O titulo da pagina incorreto"),
@@ -30,11 +32,14 @@ class LoginLogoutTest extends BaseTest {
     @Test
     @DisplayName("Deve realizar logout com sucesso apos login valido")
     void deveRealizarLogoutComSucesso() {
-        // Cada teste cria seu próprio estado do início ao fim
+        // 1. Faz o login
         InventoryPage inventoryPage = loginPage.login(TestData.VALID_USER, TestData.PASSWORD);
+
+        // 2. Faz o logout
         LoginPage retornarParaLogin = inventoryPage.logout();
 
-        // Garante que o logout limpou a sessão e voltou para a tela inicial
+        // 3. Valida se o logout foi realizado, limpou a sessão e voltou para a tela inicial
+
         assertAll("Verificações pós-logout",
             () -> assertTrue(retornarParaLogin.getCurrentUrl().equals("https://www.saucedemo.com/") 
                     || retornarParaLogin.getCurrentUrl().contains("index.html"), "Não retornou para a página inicial"),
