@@ -1,0 +1,26 @@
+target/
+
+# Pastas de relatórios e binários do Allure
+allure-results/
+allure-report/
+.allure/
+
+# Configurações locais da IDE (Não deve subir para o GitHub)
+.vscode/
+
+# Arquivo de variaveis de ambiente com dados sensiveis - nunca versionar
+.env
+
+.classpath
+.project
+.settings/
+*.iml
+.idea/
+bin/
+
+# Selenium / drivers / logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
