@@ -36,10 +36,10 @@ public class InventoryPage extends BasePage {
     public Double getProductPrice() {
         String priceText = getText(productPrice);
         if (priceText == null || priceText.isBlank()) {
-        return 0.0;
-    }
-    // Remove o cifrão e converte para double
-    return Double.parseDouble(priceText.replace("$", "").trim());
+            return 0.0;
+        }
+        // Remove o cifrão e converte para double
+        return Double.parseDouble(priceText.replace("$", "").trim());
     }
 
     public String getPageTitle() {

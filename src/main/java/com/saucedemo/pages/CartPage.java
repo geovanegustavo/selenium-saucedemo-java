@@ -23,7 +23,7 @@ public class CartPage extends BasePage {
         return getText(pageTitle);
     }
 
-    public boolean isproductRemoveButtonDisplayed() {
+    public boolean isProductRemoveButtonDisplayed() {
         return isDisplayed(productRemoveButton);
     }
 
@@ -44,16 +44,22 @@ public class CartPage extends BasePage {
     public Double getCartItemPrice() {
         String priceText = getText(cartItemPrice);
         if (priceText == null || priceText.isBlank()) {
-        return 0.0;
-    }
-    // Remove o cifrão e converte para double
-    return Double.parseDouble(priceText.replace("$", "").trim());
+            return 0.0;
+        }
+        // Remove o cifrão e converte para double
+        return Double.parseDouble(priceText.replace("$", "").trim());
     }
 
     @Step("Abrir o menu lateral (burger menu)")
     public CartPage openBurgerMenu() {
         click(burgerMenuButton);
         waitVisible(logoutLink);
+        return this;
+    }
+
+    @Step("Adicionar a mochila ao carrinho")
+    public CartPage clickCheckoutButton() {
+        click(checkoutButton);
         return this;
     }
 

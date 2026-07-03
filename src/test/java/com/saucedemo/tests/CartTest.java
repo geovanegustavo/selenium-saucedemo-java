@@ -34,7 +34,7 @@ class CartTest extends BaseTest {
             () -> assertEquals("Your Cart", cartPage.getPageTitle(), "O título da página deveria ser 'Your Cart'"),
             () -> assertEquals(productNameExpected, cartPage.getCartItemName(), "O produto exibido no carrinho não é o que foi adicionado"),
             () -> assertEquals(productPriceExpected, cartPage.getCartItemPrice(), "O preço do produto exibido no carrinho não é o que foi adicionado"),
-            () -> assertTrue(cartPage.isproductRemoveButtonDisplayed(), "O botão para remover produto do carrinho deveria aparecer"),
+            () -> assertTrue(cartPage.isProductRemoveButtonDisplayed(), "O botão para remover produto do carrinho deveria aparecer"),
             () -> assertTrue(cartPage.isContinueShoppingButtonDisplayed(), "O botão para retornar ao inventário deveria aparecer"),
             () -> assertTrue(cartPage.isCheckoutButtonDisplayed(), "O botão para confirmar o checkout deveria aparecer")
         );
