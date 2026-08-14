@@ -24,7 +24,7 @@ class LoginTest extends BaseTest {
         // 2. Valida se o login foi realizado e a página de inventário foi exibida
         assertAll("Verificações da página de Inventário pós-login",
             () -> assertTrue(inventoryPage.isDisplayed(), "A pagina de produtos deveria estar visivel"),
-            () -> assertEquals("Products", inventoryPage.getPageTitle(), "O titulo da pagina incorreto"),
+            () -> assertEquals("Products", inventoryPage.getPageTitle(), "O título da pagina incorreto"),
             () -> assertTrue(inventoryPage.getCurrentUrl().contains("inventory.html"), "A URL não mudou para o inventário")
         );
     }

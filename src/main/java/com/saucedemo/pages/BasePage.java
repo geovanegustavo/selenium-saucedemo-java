@@ -11,8 +11,8 @@ import java.time.Duration;
 
 /**
  * Classe base para todos os Page Objects.
- * Centraliza o WebDriver, o WebDriverWait e acoes comuns,
- * evitando duplicacao de codigo entre as paginas.
+ * Centraliza o WebDriver, o WebDriverWait e ações comuns,
+ * evitando duplicação de código entre às páginas.
  */
 public abstract class BasePage {
 
