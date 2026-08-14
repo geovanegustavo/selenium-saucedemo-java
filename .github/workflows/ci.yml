@@ -58,6 +58,64 @@ jobs:
         if: always()
         run: mvn -B allure:report
 
+      # Publica um resumo dos testes na propria pagina do GitHub Actions
+      # (aba "Summary"), com links para o relatorio no Pages e artefatos.
+      - name: Resumo dos resultados no GitHub Actions
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYEOF'
+          import glob, os, re
+
+          tests = failures = errors = skipped = 0
+          classes = []
+          for f in sorted(glob.glob('target/surefire-reports/TEST-*.xml')):
+              content = open(f, encoding='utf-8').read()
+              m = re.search(r'<testsuite\b[^>]*>', content)
+              if not m:
+                  continue
+              attrs = dict(re.findall(r'(\w+)="([^"]*)"', m.group(0)))
+              t = int(attrs.get('tests', 0))
+              fa = int(attrs.get('failures', 0))
+              er = int(attrs.get('errors', 0))
+              sk = int(attrs.get('skipped', 0))
+              tests += t; failures += fa; errors += er; skipped += sk
+              classes.append((os.path.basename(f), t, fa + er, sk))
+
+          repo = os.environ.get('GITHUB_REPOSITORY', '')
+          owner, name = repo.split('/', 1) if '/' in repo else ('', '')
+          pages_url = f'https://{owner}.github.io/{name}/' if owner else ''
+          run_url = (os.environ.get('GITHUB_SERVER_URL', 'https://github.com')
+                     + '/' + repo + '/actions/runs/' + os.environ.get('GITHUB_RUN_ID', ''))
+
+          passed = tests - failures - errors - skipped
+          status = '[FAILED]' if (failures + errors) > 0 else '[PASSED]'
+
+          lines = ['## Allure Report', '', f'**Status:** {status}', '']
+          lines.append('| Metric | Value |')
+          lines.append('| --- | --- |')
+          lines.append(f'| Total | {tests} |')
+          lines.append(f'| Passed | {passed} |')
+          lines.append(f'| Failed | {failures + errors} |')
+          lines.append(f'| Skipped | {skipped} |')
+          lines.append('')
+          if pages_url:
+              lines.append(f'**Full Allure report:** [{pages_url}]({pages_url}) (latest run on `main`)')
+          lines.append(f'**Artifacts:** [downloads]({run_url}#artifacts)')
+          lines.append('')
+          if classes:
+              lines.append('### Per test class')
+              lines.append('')
+              lines.append('| Class | Tests | Failed | Skipped |')
+              lines.append('| --- | --- | --- | --- |')
+              for cname, t, fa, sk in classes:
+                  lines.append(f'| `{cname}` | {t} | {fa} | {sk} |')
+          lines.append('')
+
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('\n'.join(lines))
+          PYEOF
+
       - name: Enviar resultados do Allure (artefato)
         if: always()
         uses: actions/upload-artifact@v4
