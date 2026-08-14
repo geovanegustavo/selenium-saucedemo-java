@@ -12,7 +12,7 @@ import com.saucedemo.pages.CartPage;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Testes do Carrinho de Compras")
-@Execution(ExecutionMode.CONCURRENT)
+@Execution(ExecutionMode.CONCURRENT) // Permite que o JUnit execute estes testes em paralelo com total independência
 class CartTest extends BaseTest {
 
     @Test
